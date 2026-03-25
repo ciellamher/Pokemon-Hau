@@ -1,72 +1,174 @@
-# 🐉 Pokemon-Hau Mobile
+````markdown
+# 🐉 HAUPokemon Mobile App
 
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Tailscale](https://img.shields.io/badge/Tailscale-%23FFFFFF.svg?style=for-the-badge&logo=tailscale&logoColor=black)](https://tailscale.com/)
 
-**Pokemon-Hau** is a stunning, high-performance Flutter mobile application that brings the world of Pokemon to life with modern aesthetics, smooth animations, and real-time data integration.
+---
+
+## 📱 Project Overview
+
+**HAUPokemon** is a high-performance Flutter mobile application developed for our **6CloudCom Final Project**.  
+It brings the world of Pokemon to life using modern UI design, smooth animations, and a secure cloud-powered backend built on AWS infrastructure.
+
+The application integrates mobile development, cloud computing, database systems, and secure networking into one unified platform.
 
 ---
 
 ## ✨ Key Features
 
-- **🎮 Dynamic Dashboard**: A premium, Pokemon-themed dashboard featuring a live grid of Pokemon sprites fetched dynamically.
-- **📚 Live Monster Library**: Integrated with the [PokeAPI](https://pokeapi.co/), displaying detailed information for every Pokemon including their types, IDs, and pixel-perfect animated sprites.
-- **🗺️ Interactive Map**: A customized mapping interface powered by `flutter_map` and OpenStreetMap—providing full interactive functionality without requiring complex API keys.
-- **🎨 Premium Visuals**: 
-  - **Pixel-Perfect Sprites**: Uses sharp Generation V animated pixel art with custom high-fidelity rendering (`FilterQuality.none`).
-  - **Breathing Animations**: Smooth, interactive scaling effects on buttons and cards for a premium feel.
-  - **Custom Navigation**: A unique, overlapping bottom navigation bar with 3D-style popping icons and a central scaled Pokeball.
-- **🎵 Atmospheric Audio**: Seamless, looped background music that persists across all screens for complete immersion.
-- **🔐 Secure Authentication**: Ready for scalable backend integration using Supabase.
+### 🛡️ VPN-Secured Backend
+All database and API traffic is securely routed through **Tailscale VPN** to a private AWS EC2 instance.  
+This helps keep sensitive data protected and inaccessible from the public internet.
+
+### 🎮 Dynamic Dashboard
+A Pokemon-themed dashboard displaying animated Pokemon sprites in a responsive grid layout.
+
+### 📚 Live Monster Library
+Pokemon data is retrieved in real time from an **AWS RDS PostgreSQL** database.
+
+### 🗺️ Interactive Map
+Custom mapping interface powered by:
+
+- `flutter_map`
+- OpenStreetMap
+
+This allows map rendering and navigation features inside the app.
+
+### 🎨 Premium Visual Design
+
+- Pixel-perfect Generation V Pokemon sprites
+- Smooth breathing animations
+- Custom bottom navigation bar
+- Overlapping 3D-style icon transitions
+- Consistent themed UI design
+
+### 🎵 Background Music
+
+Looped background music system that:
+
+- Plays continuously
+- Persists across navigation screens
+- Enhances user immersion
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Cloud & Tech Stack
 
-- **Framework**: [Flutter](https://flutter.dev/) (Dart)
-- **Backend & DB**: [Supabase](https://supabase.com/) (Real-time DB & Auth) + [AWS RDS](https://aws.amazon.com/rds/) (PostgreSQL Storage)
-- **Cloud Compute**: [AWS Lambda](https://aws.amazon.com/lambda/) (Serverless APIs) & [AWS EC2](https://aws.amazon.com/ec2/) (Persistent Background Workers)
-- **Networking**: [http](https://pub.dev/packages/http) (PokeAPI Integration)
-- **Audio**: [audioplayers](https://pub.dev/packages/audioplayers)
-- **Routing**: [go_router](https://pub.dev/packages/go_router)
-- **Animations**: [flutter_animate](https://pub.dev/packages/flutter_animate)
-- **Maps**: [flutter_map](https://pub.dev/packages/flutter_map) + [latlong2](https://pub.dev/packages/latlong2)
+### Frontend
+
+- Flutter (Dart)
+
+Used for building the mobile user interface and application logic.
+
+### Backend Infrastructure
+
+- AWS EC2 (Paris Region)
+- Application Load Balancer (ALB)
+
+The EC2 server hosts the backend services and handles API communication.
+
+### Database
+
+- AWS RDS PostgreSQL
+- Multi-AZ Deployment
+- Region: N. Virginia
+
+Provides:
+
+- High availability
+- Data replication
+- Automated failover
+
+### Networking
+
+- Tailscale VPN
+- AWS VPC Peering
+- DuckDNS Domain
+
+Domain used:
+
+```text
+haupokemon.duckdns.org
+````
+
+Ensures secure internal communication between services.
+
+### Automation
+
+* AWS Lambda
+
+Used to:
+
+* Automatically start EC2 instances
+* Automatically stop EC2 instances
+* Reduce infrastructure costs
+
+### Routing & Navigation
+
+Flutter packages used:
+
+* `go_router`
+* `flutter_map`
+
+These manage app navigation and map rendering.
 
 ---
 
 ## 🚀 Getting Started
 
-### Prerequisites
+### ⚠️ Important Requirement
 
-- Flutter SDK (Latest Stable)
-- Android Studio / VS Code with Flutter extensions
-- A Supabase account (Optional for full auth features)
+This application **requires connection to the HAUPokemon Tailscale VPN**.
 
-### Installation
+Without VPN access:
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/darknecrocities/Pokemon-Hau.git
-   cd Pokemon-Hau
-   ```
+* Database connection will fail
+* API requests will not work
 
-2. **Setup Environment Variables**:
-   Create a `.env` file in the root directory and add your credentials:
-   ```env
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
+---
 
-3. **Install Dependencies**:
-   ```bash
-   flutter pub get
-   ```
+## 📥 Installation Guide
 
-4. **Run the App**:
-   ```bash
-   flutter run
-   ```
+Follow these steps to run the application locally.
+
+### Step 1 — Connect to VPN
+
+Ensure that:
+
+* Tailscale is installed
+* You are logged in
+* You are connected to the HAUPokemon network
+
+### Step 2 — Clone Repository
+
+Run:
+
+```bash
+git clone https://github.com/ciellamher/Pokemon-Hau.git
+cd Pokemon-Hau
+```
+
+### Step 3 — Install Dependencies
+
+Run:
+
+```bash
+flutter pub get
+```
+
+This downloads all required Flutter packages.
+
+### Step 4 — Run the Application
+
+Run:
+
+```bash
+flutter run
+```
+
+The app will build and launch on the connected device.
 
 ---
 
@@ -75,22 +177,168 @@
 ```text
 lib/
 ├── core/
-│   ├── services/      # Audio, API, and Global Services
-│   └── widgets/       # Shared UI (Navbar, Cards, Background)
+│   ├── services/
+│   │   ├── audio_service.dart
+│   │   ├── api_service.dart
+│   │   ├── aws_service.dart
+│   │   └── global_services.dart
+│   │
+│   └── widgets/
+│       ├── navbar.dart
+│       ├── card_widgets.dart
+│       └── background_widgets.dart
+│
 ├── features/
-│   ├── auth/          # Sign In & Sign Up Screens
-│   ├── dashboard/     # Main Grid & Player Stats
-│   ├── map/           # OSM Interactive Map
-│   └── pokemon/       # Monster Library & PokeAPI logic
-└── main.dart          # App Entry & GoRouter config
+│   ├── auth/
+│   │   ├── login_screen.dart
+│   │   └── signup_screen.dart
+│   │
+│   ├── dashboard/
+│   │   ├── dashboard_screen.dart
+│   │   └── player_stats.dart
+│   │
+│   ├── map/
+│   │   └── map_screen.dart
+│   │
+│   └── pokemon/
+│       ├── pokemon_list.dart
+│       └── pokemon_details.dart
+│
+└── main.dart
 ```
 
 ---
 
-## 📄 License
+## ☁️ System Architecture Summary
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+The HAUPokemon application follows a secure cloud architecture:
+
+```text
+Mobile App
+   ↓
+Tailscale VPN
+   ↓
+AWS EC2 Web Server
+   ↓
+AWS RDS PostgreSQL Database
+```
+
+This architecture ensures:
+
+* Secure communication
+* Controlled database access
+* Scalable cloud deployment
 
 ---
 
-Developed with ❤️ by the **darknecrocities** team.
+## 🔐 Security Features
+
+* Private VPN-only database access
+* No public database exposure
+* Secure API communication
+* Controlled infrastructure networking
+* Cloud resource isolation
+
+---
+
+## ⚙️ Automation Workflow
+
+AWS Lambda functions automatically:
+
+* Start the EC2 server during testing hours
+* Stop the EC2 server after usage
+* Help optimize cost efficiency
+
+---
+
+## 📊 Performance Optimization
+
+The app is optimized using:
+
+* Efficient API calls
+* Cached sprite loading
+* Lightweight UI animations
+* Persistent audio engine
+* Cloud-based database queries
+
+---
+
+## 🧪 Testing Requirements
+
+Before testing the application, make sure these are ready:
+
+* VPN connected
+* EC2 running
+* Database active
+* Flutter dependencies installed
+
+---
+
+## 👥 Development Team
+
+Developed for **6CloudCom**
+Under **Sir Ulysses Raymond F. Monsale**
+
+### Team Members
+
+**Jimenez, Graciella Mhervie D.**
+Project Manager & Documentation
+
+Responsible for:
+
+* Documentation
+* System flow explanation
+* Project coordination
+
+**Marquez, Jian Kalel D.**
+Mobile Developer (Flutter)
+
+Responsible for:
+
+* UI implementation
+* Flutter development
+* Navigation system
+
+**Parejas, Arron Kian M.**
+Cloud Engineer
+
+Responsible for:
+
+* AWS infrastructure
+* Server setup
+* Database configuration
+
+**Tongol, Jenica Sarah B.**
+UI/UX Designer & App Logic
+
+Responsible for:
+
+* Visual design
+* User interface layout
+* Interaction logic
+
+---
+
+## 📌 Project Purpose
+
+This project demonstrates:
+
+* Mobile application development
+* Cloud infrastructure deployment
+* Secure networking implementation
+* Database integration
+* Modern UI/UX design
+
+All combined into one real-world system.
+
+---
+
+## ❤️ Acknowledgment
+
+Developed with dedication and teamwork
+by the **CS-301**
+
+For academic and cloud computing system development.
+
+```
+```
