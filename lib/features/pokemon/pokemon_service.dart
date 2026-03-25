@@ -13,7 +13,7 @@ class PokemonModel {
   final double lat;
   final double lng;
   final double radius;
-  final int? dbId; // Store Supabase ID for spawned monsters
+  final int? dbId; 
 
   PokemonModel({
     required this.id,
@@ -189,7 +189,7 @@ class PokemonService with ChangeNotifier {
     return [];
   }
 
-  /// Fetch admin-placed monsters from Supabase
+
   Future<List<PokemonModel>> fetchSpawnedMonsters() async {
     try {
       final client = _supabase;
