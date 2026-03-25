@@ -24,10 +24,7 @@ Future<void> main() async {
     final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
     final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
     
-    // Initialize Supabase only if valid configuration is present
-    if (supabaseUrl.isNotEmpty && 
-        supabaseAnonKey.isNotEmpty && 
-        supabaseUrl != 'https://your-project-url.supabase.co') {
+    if (supabaseUrl.isNotEmpty && supabaseAnonKey.isNotEmpty) {
       await Supabase.initialize(
         url: supabaseUrl,
         anonKey: supabaseAnonKey,

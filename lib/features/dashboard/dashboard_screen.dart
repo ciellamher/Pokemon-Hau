@@ -16,12 +16,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final PokemonService _pokemonService = PokemonService();
   List<PokemonModel> _pokemons = [];
   bool _isLoading = true;
+  String _playerName = 'TRAINER';
+  int _level = 1;
+  int _monstersCaught = 0;
 
   @override
   void initState() {
     super.initState();
     _pokemonService.addListener(_updatePokemons);
     _loadSprites();
+    _loadProfile();
   }
 
   @override
@@ -34,6 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (mounted) {
       setState(() {
         _pokemons = _pokemonService.caughtPokemons;
+        _monstersCaught = _pokemons.length;
       });
     }
   }
@@ -42,8 +47,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final pokemons = await _pokemonService.fetchMyPokemon();
     setState(() {
       _pokemons = pokemons;
+      _monstersCaught = pokemons.length;
       _isLoading = false;
     });
+  }
+
+  Future<void> _loadProfile() async {
+    final profile = await _pokemonService.fetchUserProfile();
+    if (profile != null && mounted) {
+      setState(() {
+        _playerName = (profile['player_name'] ?? 'TRAINER').toString().toUpperCase();
+        _level = profile['level'] ?? 1;
+      });
+    }
   }
 
   @override
@@ -87,10 +103,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text('PLAYER NAME: GRACIELLA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                          Text('LEVEL: 18', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                          Text('RANK: 1', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                        children: [
+                          Text('PLAYER NAME: $_playerName', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                          Text('LEVEL: $_level', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                          Text('MONSTERS: $_monstersCaught', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
                         ],
                       ),
                     ),

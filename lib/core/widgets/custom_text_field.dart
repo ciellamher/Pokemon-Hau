@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final bool isPassword;
+  final TextEditingController? controller;
 
   const CustomTextField({
     super.key,
     required this.label,
     this.isPassword = false,
+    this.controller,
   });
 
   @override
@@ -39,6 +41,7 @@ class CustomTextField extends StatelessWidget {
               ),
               Expanded(
                 child: TextField(
+                  controller: controller,
                   obscureText: isPassword,
                   decoration: const InputDecoration(
                     border: InputBorder.none,

@@ -3,9 +3,37 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pokemon_hau/core/widgets/custom_navbar.dart';
 import 'package:pokemon_hau/core/widgets/mascot_card.dart';
+import 'package:pokemon_hau/features/pokemon/pokemon_service.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final PokemonService _pokemonService = PokemonService();
+  String _username = 'LOADING...';
+  String _playerName = 'LOADING...';
+  int _level = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final profile = await _pokemonService.fetchUserProfile();
+    if (profile != null && mounted) {
+      setState(() {
+        _username = (profile['username'] ?? 'UNKNOWN').toString().toUpperCase();
+        _playerName = (profile['player_name'] ?? 'UNKNOWN').toString().toUpperCase();
+        _level = profile['level'] ?? 1;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,32 +77,32 @@ class SettingsScreen extends StatelessWidget {
                     color: Colors.white.withValues(alpha: 0.8),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Column(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'USERNAME: GRACIELLA',
-                        style: TextStyle(
+                        'USERNAME: $_username',
+                        style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFF2C3E1F),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
-                        'PLAYER NAME: GRACIELLA',
-                        style: TextStyle(
+                        'PLAYER NAME: $_playerName',
+                        style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
                           color: Color(0xFF2C3E1F),
                         ),
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Text(
-                        'LEVEL: 18',
-                        style: TextStyle(
+                        'LEVEL: $_level',
+                        style: const TextStyle(
                           fontFamily: 'Montserrat',
                           fontSize: 14,
                           fontWeight: FontWeight.w900,
@@ -93,7 +121,10 @@ class SettingsScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 _buildSettingButton(context, 'DELETE ACCOUNT', onTap: () => _showDeleteDialog(context)),
                 const SizedBox(height: 10),
-                _buildSettingButton(context, 'SIGN OUT', onTap: () => SystemNavigator.pop()),
+                _buildSettingButton(context, 'SIGN OUT', onTap: () async {
+                  await _pokemonService.signOut();
+                  if (mounted) context.go('/signin');
+                }),
               ],
             ),
           ),
@@ -104,6 +135,7 @@ class SettingsScreen extends StatelessWidget {
   }
 
   void _showDeleteDialog(BuildContext context) {
+    final deleteController = TextEditingController();
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -142,6 +174,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
+                controller: deleteController,
                 decoration: InputDecoration(
                   hintText: 'DELETE',
                   hintStyle: TextStyle(
@@ -168,7 +201,13 @@ class SettingsScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => Navigator.pop(ctx),
+                      onPressed: () async {
+                        if (deleteController.text.trim().toUpperCase() == 'DELETE') {
+                          Navigator.pop(ctx);
+                          await _pokemonService.deleteAccount();
+                          if (mounted) context.go('/signin');
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF7A0000),
                         foregroundColor: Colors.white,
@@ -208,7 +247,7 @@ class SettingsScreen extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFA50000), // Dark red from screenshot
+          backgroundColor: const Color(0xFFA50000),
           foregroundColor: Colors.white,
           side: const BorderSide(color: Colors.black, width: 2),
           padding: const EdgeInsets.symmetric(vertical: 16),
