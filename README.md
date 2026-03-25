@@ -279,6 +279,7 @@ Under **Sir Ulysses Raymond F. Monsale**
 ### Team Members
 
 **Jimenez, Graciella Mhervie D.**
+
 Project Manager & Documentation
 
 Responsible for:
@@ -288,6 +289,7 @@ Responsible for:
 * Project coordination
 
 **Marquez, Jian Kalel D.**
+
 Mobile Developer (Flutter)
 
 Responsible for:
@@ -297,6 +299,7 @@ Responsible for:
 * Navigation system
 
 **Parejas, Arron Kian M.**
+
 Cloud Engineer
 
 Responsible for:
@@ -306,6 +309,7 @@ Responsible for:
 * Database configuration
 
 **Tongol, Jenica Sarah B.**
+
 UI/UX Designer & App Logic
 
 Responsible for:
