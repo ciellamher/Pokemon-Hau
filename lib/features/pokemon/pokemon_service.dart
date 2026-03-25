@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PokemonModel {
   final String id;
@@ -22,10 +24,76 @@ class PokemonModel {
   });
 }
 
-class PokemonService {
-  Future<List<PokemonModel>> fetchMyPokemon() async {
+class PokemonService with ChangeNotifier {
+  static final PokemonService _instance = PokemonService._internal();
+  factory PokemonService() => _instance;
+  PokemonService._internal();
+
+  final List<PokemonModel> _caughtPokemons = [];
+  List<PokemonModel> get caughtPokemons => _caughtPokemons;
+
+  Future<void> loadCaughtPokemon() async {
     try {
-      final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=9&offset=0'));
+      final prefs = await SharedPreferences.getInstance();
+      final String? caughtJson = prefs.getString('caught_pokemons');
+      if (caughtJson != null) {
+        final List decoded = json.decode(caughtJson);
+        _caughtPokemons.clear();
+        for (var item in decoded) {
+          _caughtPokemons.add(PokemonModel(
+            id: item['id'],
+            name: item['name'],
+            type: item['type'],
+            spriteUrl: item['spriteUrl'],
+            lat: item['lat'],
+            lng: item['lng'],
+            radius: item['radius'],
+          ));
+        }
+        notifyListeners();
+      }
+    } catch (e) {
+      print('Error loading caught pokemon: $e');
+    }
+  }
+
+  Future<void> saveCaughtPokemon() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final List encoded = _caughtPokemons.map((p) => {
+        'id': p.id,
+        'name': p.name,
+        'type': p.type,
+        'spriteUrl': p.spriteUrl,
+        'lat': p.lat,
+        'lng': p.lng,
+        'radius': p.radius,
+      }).toList();
+      await prefs.setString('caught_pokemons', json.encode(encoded));
+    } catch (e) {
+      print('Error saving caught pokemon: $e');
+    }
+  }
+
+  void catchPokemon(PokemonModel pokemon) {
+    if (!_caughtPokemons.any((p) => p.name == pokemon.name)) {
+      _caughtPokemons.add(pokemon);
+      saveCaughtPokemon();
+      notifyListeners();
+    }
+  }
+
+  Future<List<PokemonModel>> fetchMyPokemon() async {
+    if (_caughtPokemons.isEmpty) {
+      await loadCaughtPokemon();
+    }
+    return _caughtPokemons;
+  }
+
+  Future<List<PokemonModel>> fetchWildPokemon() async {
+    try {
+      final randomOffset = Random().nextInt(150);
+      final response = await http.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?limit=5&offset=$randomOffset'));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         final List results = data['results'];
@@ -35,7 +103,7 @@ class PokemonService {
         return pokemons.whereType<PokemonModel>().toList();
       }
     } catch (e) {
-      print('Error fetching pokemon: $e');
+      print('Error fetching wild pokemon: $e');
     }
     return [];
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MascotCard extends StatelessWidget {
   final Widget child;
   final double width;
+  final double? height;
   final bool hasBackButton;
   final VoidCallback? onBackPressed;
   
@@ -10,6 +11,7 @@ class MascotCard extends StatelessWidget {
     super.key, 
     required this.child, 
     this.width = double.infinity,
+    this.height,
     this.hasBackButton = false,
     this.onBackPressed,
   });
@@ -22,6 +24,7 @@ class MascotCard extends StatelessWidget {
       children: [
         Container(
           width: width,
+          height: height,
           margin: const EdgeInsets.only(top: 60), // Space for mascot
           padding: const EdgeInsets.fromLTRB(20, 40, 20, 30),
           decoration: BoxDecoration(

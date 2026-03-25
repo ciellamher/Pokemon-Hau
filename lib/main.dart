@@ -9,8 +9,11 @@ import 'package:pokemon_hau/features/auth/sign_in_screen.dart';
 import 'package:pokemon_hau/features/auth/sign_up_screen.dart';
 import 'package:pokemon_hau/features/dashboard/dashboard_screen.dart';
 import 'package:pokemon_hau/features/map/map_screen.dart';
+import 'package:pokemon_hau/features/ranking/ranking_screen.dart';
+import 'package:pokemon_hau/features/settings/settings_screen.dart';
+import 'package:pokemon_hau/features/settings/edit_profile_screen.dart';
+import 'package:pokemon_hau/features/settings/about_us_screen.dart';
 import 'package:pokemon_hau/features/pokemon/monster_library_screen.dart';
-import 'package:pokemon_hau/features/pokemon/pokemon_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,14 +88,43 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/library',
-      pageBuilder: (context, state) {
-        final pokemons = state.extra as List<PokemonModel>? ?? [];
-        return CustomTransitionPage(
-          child: BackgroundWrapper(child: MonsterLibraryScreen(pokemons: pokemons)),
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: MonsterLibraryScreen()),
           transitionsBuilder: (context, animation, secondaryAnimation, child) => 
               FadeTransition(opacity: animation, child: child),
-        );
-      },
+        ),
+    ),
+    GoRoute(
+      path: '/rankings',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: RankingScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/settings',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: SettingsScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/edit-profile',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: EditProfileScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/about-us',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: AboutUsScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
     ),
   ],
 );

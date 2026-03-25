@@ -20,7 +20,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    _pokemonService.addListener(_updatePokemons);
     _loadSprites();
+  }
+
+  @override
+  void dispose() {
+    _pokemonService.removeListener(_updatePokemons);
+    super.dispose();
+  }
+
+  void _updatePokemons() {
+    if (mounted) {
+      setState(() {
+        _pokemons = _pokemonService.caughtPokemons;
+      });
+    }
   }
 
   Future<void> _loadSprites() async {
@@ -81,7 +96,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                     // Settings Button
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => context.push('/settings'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFA50000),
                         foregroundColor: Colors.white,
@@ -104,6 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: MascotCard(
+                  height: double.infinity,
                   child: Column(
                     children: [
                       const Text(

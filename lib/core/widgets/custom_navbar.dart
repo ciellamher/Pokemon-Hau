@@ -20,61 +20,62 @@ class CustomNavbar extends StatelessWidget {
             children: [
               // Left Tab (RANKINGS)
               Expanded(
-                child: Container(
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+                child: GestureDetector(
+                  onTap: () => context.push('/rankings'),
+                  child: Container(
+                    height: 100,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                      border: Border(
+                        top: BorderSide(color: Color(0xFF2C3E1F), width: 5),
+                        left: BorderSide(color: Color(0xFF2C3E1F), width: 5),
+                        right: BorderSide(color: Color(0xFF2C3E1F), width: 5),
+                      ),
                     ),
-                    border: Border(
-                      top: BorderSide(color: Color(0xFF2C3E1F), width: 5),
-                      left: BorderSide(color: Color(0xFF2C3E1F), width: 5),
-                      right: BorderSide(color: Color(0xFF2C3E1F), width: 5),
-                    ),
-                  ),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      // Text label stays at the bottom
-                      Positioned(
-                        bottom: 12,
-                        child: Stack(
-                          children: [
-                            Text(
-                              'RANKINGS', 
-                              style: TextStyle(
-                                fontFamily: 'Montserrat', 
-                                fontSize: 12, 
-                                fontWeight: FontWeight.w900, 
-                                letterSpacing: 1.0,
-                                foreground: Paint()
-                                  ..style = PaintingStyle.stroke
-                                  ..strokeWidth = 3
-                                  ..color = const Color(0xFF2C3E1F)
-                              )
-                            ),
-                            const Text(
-                              'RANKINGS', 
-                              style: TextStyle(
-                                fontFamily: 'Montserrat', 
-                                fontSize: 12, 
-                                fontWeight: FontWeight.w900, 
-                                letterSpacing: 1.0,
-                                color: Colors.white
-                              )
-                            ),
-                          ]
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.bottomCenter,
+                      children: [
+                        Positioned(
+                          bottom: 12,
+                          child: Stack(
+                            children: [
+                              Text(
+                                'RANKINGS', 
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat', 
+                                  fontSize: 12, 
+                                  fontWeight: FontWeight.w900, 
+                                  letterSpacing: 1.0,
+                                  foreground: Paint()
+                                    ..style = PaintingStyle.stroke
+                                    ..strokeWidth = 3
+                                    ..color = const Color(0xFF2C3E1F)
+                                )
+                              ),
+                              const Text(
+                                'RANKINGS', 
+                                style: TextStyle(
+                                  fontFamily: 'Montserrat', 
+                                  fontSize: 12, 
+                                  fontWeight: FontWeight.w900, 
+                                  letterSpacing: 1.0,
+                                  color: Colors.white
+                                )
+                              ),
+                            ]
+                          ),
                         ),
-                      ),
-                      // Icon pops out of the top
-                      Positioned(
-                        bottom: 40,
-                        child: Image.asset('Assets/Images/trophy.png', height: 75),
-                      ),
-                    ],
+                        Positioned(
+                          bottom: 40,
+                          child: Image.asset('Assets/Images/trophy.png', height: 75),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -98,7 +99,7 @@ class CustomNavbar extends StatelessWidget {
                           fontFamily: 'Montserrat', 
                           fontSize: 10, 
                           fontWeight: FontWeight.w900, 
-                          letterSpacing: 0.5,
+                          letterSpacing: 1.0,
                           foreground: Paint()
                             ..style = PaintingStyle.stroke
                             ..strokeWidth = 3
@@ -111,20 +112,18 @@ class CustomNavbar extends StatelessWidget {
                           fontFamily: 'Montserrat', 
                           fontSize: 10, 
                           fontWeight: FontWeight.w900, 
-                          letterSpacing: 0.5,
+                          letterSpacing: 1.0,
                           color: Colors.white
                         )
                       ),
-                    ]
+                    ],
                   ),
                 ),
               ),
               // Right Tab (MAP)
               Expanded(
                 child: GestureDetector(
-                  onTap: () {
-                    context.push('/map');
-                  },
+                  onTap: () => context.push('/map'),
                   child: Container(
                     height: 100,
                     decoration: const BoxDecoration(
@@ -184,15 +183,15 @@ class CustomNavbar extends StatelessWidget {
               ),
             ],
           ),
-          // Overlapping Pokeball (Massive scale)
+          // Overlapping Pokeball
           Positioned(
-            bottom: 30, // Rests on the center tab
+            bottom: 30,
             child: BreathingWidget(
               child: GestureDetector(
-                onTap: () {},
+                onTap: () => context.push('/map'),
                 child: Image.asset(
                   'Assets/Images/pokeball.png',
-                  height: 130, // Much larger icon size
+                  height: 130,
                   width: 130,
                 ),
               ),

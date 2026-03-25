@@ -4,10 +4,22 @@ import 'package:pokemon_hau/core/widgets/custom_navbar.dart';
 
 import 'pokemon_service.dart';
 
-class MonsterLibraryScreen extends StatelessWidget {
-  final List<PokemonModel> pokemons;
+class MonsterLibraryScreen extends StatefulWidget {
+  const MonsterLibraryScreen({super.key});
 
-  const MonsterLibraryScreen({super.key, this.pokemons = const []});
+  @override
+  State<MonsterLibraryScreen> createState() => _MonsterLibraryScreenState();
+}
+
+class _MonsterLibraryScreenState extends State<MonsterLibraryScreen> {
+  final PokemonService _pokemonService = PokemonService();
+  List<PokemonModel> _pokemons = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pokemons = _pokemonService.caughtPokemons;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,10 +90,10 @@ class MonsterLibraryScreen extends StatelessWidget {
                       Expanded(
                         child: ListView.separated(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          itemCount: pokemons.length,
+                          itemCount: _pokemons.length,
                           separatorBuilder: (context, index) => const SizedBox(height: 16),
                           itemBuilder: (context, index) {
-                            final monster = pokemons[index];
+                            final monster = _pokemons[index];
                             return Container(
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
