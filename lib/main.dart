@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -14,9 +15,28 @@ import 'package:pokemon_hau/features/settings/settings_screen.dart';
 import 'package:pokemon_hau/features/settings/edit_profile_screen.dart';
 import 'package:pokemon_hau/features/settings/about_us_screen.dart';
 import 'package:pokemon_hau/features/pokemon/monster_library_screen.dart';
+import 'package:pokemon_hau/features/admin/admin_dashboard_screen.dart';
+import 'package:pokemon_hau/features/admin/monster_control_center.dart';
+import 'package:pokemon_hau/features/admin/admin_map_screen.dart';
+import 'package:pokemon_hau/features/admin/add_monster_form_screen.dart';
+import 'package:pokemon_hau/features/admin/monster_added_screen.dart';
+import 'package:pokemon_hau/features/admin/admin_monster_list_screen.dart';
+import 'package:pokemon_hau/features/admin/admin_edit_monster_selection_screen.dart';
+import 'package:pokemon_hau/features/admin/admin_edit_monster_form_screen.dart';
+import 'package:pokemon_hau/core/widgets/system_status_wrapper.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Lock orientation to vertical
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+  // Hide mobile navbar and status bar (fullscreen)
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   
   try {
     await dotenv.load(fileName: ".env");
@@ -69,11 +89,15 @@ final _router = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
-      pageBuilder: (context, state) => CustomTransitionPage(
-        child: const BackgroundWrapper(child: DashboardScreen()),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) => 
-            FadeTransition(opacity: animation, child: child),
-      ),
+      pageBuilder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        final showControl = extra?['show_control'] as bool? ?? false;
+        return CustomTransitionPage(
+          child: BackgroundWrapper(child: DashboardScreen(showControl: showControl)),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        );
+      },
     ),
     GoRoute(
       path: '/map',
@@ -123,6 +147,95 @@ final _router = GoRouter(
               FadeTransition(opacity: animation, child: child),
         ),
     ),
+    GoRoute(
+      path: '/admin-dashboard',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: AdminDashboardScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/monster-control',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: MonsterControlCenter()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/admin-map',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: AdminMapScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/add-monster-form',
+      pageBuilder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return CustomTransitionPage(
+          child: BackgroundWrapper(
+            child: AddMonsterFormScreen(
+              lat: extra['lat'] as double,
+              lng: extra['lng'] as double,
+              radius: extra['radius'] as double,
+            ),
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/monster-added',
+      pageBuilder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        return CustomTransitionPage(
+          child: BackgroundWrapper(
+            child: MonsterAddedScreen(
+              name: extra['name'] as String,
+              type: extra['type'] as String,
+              spriteUrl: extra['sprite_url'] as String,
+              id: extra['id'] as String,
+              lat: extra['lat'] as double,
+              lng: extra['lng'] as double,
+              radius: extra['radius'] as double,
+            ),
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/admin-monster-list',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: AdminMonsterListScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/admin-edit-selection',
+      pageBuilder: (context, state) => CustomTransitionPage(
+          child: const BackgroundWrapper(child: AdminEditMonsterSelectionScreen()),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        ),
+    ),
+    GoRoute(
+      path: '/admin-edit-form',
+      pageBuilder: (context, state) {
+        final monster = state.extra as Map<String, dynamic>;
+        return CustomTransitionPage(
+          child: BackgroundWrapper(child: AdminEditMonsterFormScreen(monster: monster)),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) => 
+              FadeTransition(opacity: animation, child: child),
+        );
+      },
+    ),
   ],
 );
 
@@ -139,6 +252,9 @@ class HauPokemonApp extends StatelessWidget {
         primaryColor: const Color(0xFFA50000), // Dark Red 
         scaffoldBackgroundColor: Colors.transparent, // Let BackgroundWrapper show
       ),
+      builder: (context, child) {
+        return SystemStatusWrapper(child: child!);
+      },
     );
   }
 }

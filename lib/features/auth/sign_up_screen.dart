@@ -115,22 +115,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: MascotCard(
               hasBackButton: true,
               onBackPressed: () => context.pop(),
+              title: 'SIGN UP',
+              titleFontSize: 30,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text(
-                    'SIGN UP',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
-                      height: 1.0,
-                      letterSpacing: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  
                   CustomTextField(label: 'EMAIL:', controller: _emailController),
                   const SizedBox(height: 15),
                   CustomTextField(label: 'USERNAME:', controller: _usernameController),

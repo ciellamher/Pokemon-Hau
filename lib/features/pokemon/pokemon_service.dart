@@ -13,6 +13,7 @@ class PokemonModel {
   final double lat;
   final double lng;
   final double radius;
+  final int? dbId; // Store Supabase ID for spawned monsters
 
   PokemonModel({
     required this.id,
@@ -22,6 +23,7 @@ class PokemonModel {
     required this.lat,
     required this.lng,
     required this.radius,
+    this.dbId,
   });
 }
 
@@ -125,7 +127,7 @@ class PokemonService with ChangeNotifier {
   }
 
   /// Catch a pokemon and save to Supabase + local
-  void catchPokemon(PokemonModel pokemon) async {
+  Future<void> catchPokemon(PokemonModel pokemon) async {
     if (!_caughtPokemons.any((p) => p.name == pokemon.name)) {
       _caughtPokemons.add(pokemon);
       _saveToLocal();
@@ -149,6 +151,12 @@ class PokemonService with ChangeNotifier {
               .from('profiles')
               .update({'monster_caught_count': _caughtPokemons.length})
               .eq('id', uid);
+
+          // If it was a spawned monster, remove it from the shared world
+          if (pokemon.dbId != null) {
+            await client.from('spawned_monsters').delete().eq('id', pokemon.dbId!);
+            debugPrint('REMOVED SPAWNED MONSTER FROM DB: ${pokemon.dbId}');
+          }
         }
       } catch (e) {
         debugPrint('Error saving to Supabase: $e');
@@ -177,6 +185,29 @@ class PokemonService with ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Error fetching wild pokemon: $e');
+    }
+    return [];
+  }
+
+  /// Fetch admin-placed monsters from Supabase
+  Future<List<PokemonModel>> fetchSpawnedMonsters() async {
+    try {
+      final client = _supabase;
+      if (client != null) {
+        final data = await client.from('spawned_monsters').select();
+        return (data as List).map((item) => PokemonModel(
+          id: item['pokemon_id'].toString().padLeft(3, '0'),
+          name: item['name'],
+          type: item['type'],
+          spriteUrl: item['sprite_url'],
+          lat: (item['latitude'] as num).toDouble(),
+          lng: (item['longitude'] as num).toDouble(),
+          radius: (item['radius'] as num).toDouble(),
+          dbId: item['id'] as int,
+        )).toList();
+      }
+    } catch (e) {
+      debugPrint('Error fetching spawned monsters: $e');
     }
     return [];
   }

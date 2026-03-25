@@ -48,19 +48,10 @@ class _RankingScreenState extends State<RankingScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: MascotCard(
           height: double.infinity,
+          title: 'RANKINGS',
+          titleFontSize: 36,
           child: Column(
             children: [
-              const Text(
-                'RANKINGS',
-                style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontSize: 36,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.5,
-                  color: Color(0xFF2C3E1F),
-                ),
-              ),
-              const SizedBox(height: 20),
               Expanded(
                 child: _isLoading
                     ? const Center(child: CircularProgressIndicator(color: Color(0xFF2C3E1F)))

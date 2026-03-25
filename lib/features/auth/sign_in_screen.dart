@@ -72,22 +72,11 @@ class _SignInScreenState extends State<SignInScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: BreathingWidget(
               child: MascotCard(
+                title: 'SIGN IN',
+                titleFontSize: 30,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'SIGN IN',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Montserrat',
-                        fontSize: 30,
-                        fontWeight: FontWeight.w900,
-                        height: 1.0,
-                        letterSpacing: 1.2,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    
                     CustomTextField(label: 'EMAIL:', controller: _emailController),
                     const SizedBox(height: 20),
                     CustomTextField(label: 'PASSWORD:', isPassword: true, controller: _passwordController),

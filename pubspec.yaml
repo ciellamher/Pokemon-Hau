@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.7.3
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -43,6 +43,8 @@ dependencies:
   shared_preferences: ^2.5.4
   flutter_map: ^8.2.2
   latlong2: ^0.9.1
+  torch_light: ^1.1.0
+  confetti: ^0.7.0
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "Assets/Images/pokeball.png"
+  min_sdk_android: 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -71,10 +80,12 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: Assets/Fonts/Montserrat/Montserrat-VariableFont_wght.ttf
+        - asset: Assets/Fonts/Montserrat/static/Montserrat-ExtraBold.ttf
         - asset: Assets/Fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf
           style: italic
     - family: Roboto
       fonts:
         - asset: Assets/Fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf
+        - asset: Assets/Fonts/Roboto/static/Roboto_Condensed-ExtraBold.ttf
         - asset: Assets/Fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf
           style: italic

@@ -90,19 +90,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: MascotCard(
             hasBackButton: true,
             onBackPressed: () => context.pop(),
+            title: 'EDIT PROFILE',
+            titleFontSize: 30,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Text(
-                    'EDIT PROFILE',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF2C3E1F),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
                   _buildEditField('NEW PLAYER NAME:', _playerNameController),
                   const SizedBox(height: 16),
                   _buildEditField('CURRENT PASSWORD:', _currentPasswordController, isPassword: true),

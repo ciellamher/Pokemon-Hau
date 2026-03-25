@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_hau/core/widgets/stroke_text.dart';
 
 class MascotCard extends StatelessWidget {
   final Widget child;
@@ -6,6 +7,9 @@ class MascotCard extends StatelessWidget {
   final double? height;
   final bool hasBackButton;
   final VoidCallback? onBackPressed;
+  final String? title;
+  final double titleFontSize;
+  final bool showShadow;
   
   const MascotCard({
     super.key, 
@@ -14,6 +18,9 @@ class MascotCard extends StatelessWidget {
     this.height,
     this.hasBackButton = false,
     this.onBackPressed,
+    this.title,
+    this.titleFontSize = 24,
+    this.showShadow = true,
   });
 
   @override
@@ -26,20 +33,41 @@ class MascotCard extends StatelessWidget {
           width: width,
           height: height,
           margin: const EdgeInsets.only(top: 60), // Space for mascot
-          padding: const EdgeInsets.fromLTRB(20, 40, 20, 30),
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
           decoration: BoxDecoration(
             color: const Color(0xFFFCF3D7), // Light yellowish-cream
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: const Color(0xFF2C3E1F), width: 6), // Dark greenish border from screenshot
-            boxShadow: [
+            boxShadow: showShadow ? [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.15),
                 blurRadius: 10,
                 offset: const Offset(0, 5),
               ),
+            ] : null,
+          ),
+          child: Column(
+            mainAxisSize: height != null ? MainAxisSize.max : MainAxisSize.min,
+            children: [
+              if (title != null) ...[
+                const SizedBox(height: 20),
+                StrokeText(
+                  text: title!,
+                  fontSize: titleFontSize,
+                  letterSpacing: titleFontSize * 0.04,
+                ),
+                const SizedBox(height: 16),
+              ],
+              height != null 
+                  ? Expanded(child: child) 
+                  : Flexible(
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: child,
+                      ),
+                    ),
             ],
           ),
-          child: child,
         ),
         Positioned(
           top: 0,

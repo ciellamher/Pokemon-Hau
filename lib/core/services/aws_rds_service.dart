@@ -4,8 +4,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// AWS RDS Service Foundation
 /// 
-/// ⚠️ NOT YET INTEGRATED — This is a foundation/scaffold only.
-/// 
 /// Architecture: Flutter → API Gateway → Lambda → RDS MySQL (Private Subnet)
 /// 
 /// VPC Configuration:

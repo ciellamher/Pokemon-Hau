@@ -14,21 +14,13 @@ class AboutUsScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: MascotCard(
-            // Removed height: double.infinity to let card fit content
             hasBackButton: true,
             onBackPressed: () => context.pop(),
+            title: 'ABOUT US',
+            titleFontSize: 30,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const Text(
-                    'ABOUT US',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: 30,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF2C3E1F),
-                    ),
-                  ),
                   const SizedBox(height: 20),
                   Container(
                     width: double.infinity,
