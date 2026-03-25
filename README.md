@@ -1,4 +1,3 @@
-````markdown
 # 🐉 HAUPokemon Mobile App
 
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev)
@@ -89,9 +88,7 @@ Provides:
 
 Domain used:
 
-```text
 haupokemon.duckdns.org
-````
 
 Ensures secure internal communication between services.
 
